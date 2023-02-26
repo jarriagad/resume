@@ -1,2 +1,0 @@
-# resume
-Personal automated resume
