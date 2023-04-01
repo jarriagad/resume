@@ -26,5 +26,7 @@ jobs:
 
           - name: 'Build Inventory Image'
             run: |
-              docker build . --tag ghcr.io/jarriagad/resume:latest
+              VERSION_TAG=$(echo ${{github.ref}} | sed 's/refs\/heads\///')-${{github.sha}}
+              docker build . --tag ghcr.io/jarriagad/resume:latest --tag ghcr.io/jarriagad/resume:$VERSION_TAG
               docker push ghcr.io/jarriagad/resume:latest
+              docker push ghcr.io/jarriagad/resume:$VERSION_TAG
