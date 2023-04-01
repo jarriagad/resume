@@ -14,8 +14,8 @@ csp = {
     ]
 }
 
-CORS(app)
-Talisman(app, content_security_policy=csp, force_https=False, force_https_permanent=False)
+#CORS(app)
+#Talisman(app, content_security_policy=csp, force_https=False, force_https_permanent=False)
 #Talisman(app, content_security_policy=csp)
 
 @app.route('/')
