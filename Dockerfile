@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 8000
 
 # Start Gunicorn with 4 worker processes
-CMD ["gunicorn", "--workers", "2", "--bind", "0.0.0.0:8000", "app:app"]
+CMD ["gunicorn", "--workers", "2", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "app:app"]
