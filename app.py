@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_talisman import Talisman
+import os
 
 app = Flask(__name__)
 
@@ -14,13 +15,27 @@ csp = {
     ]
 }
 
-#CORS(app)
-#Talisman(app, content_security_policy=csp, force_https=False, force_https_permanent=False)
-#Talisman(app, content_security_policy=csp)
+class Config:
+    DEBUG = False
+
+class ProductionConfig(Config):
+    CORS(app)
+    Talisman(app, content_security_policy=csp)
+
+
+class StagingConfig(Config):
+    DEBUG = True
+    Talisman(app, content_security_policy=csp, force_https=False, force_https_permanent=False)
+
+
+if os.environ.get("STAGING") == "True":
+    app.config.from_object(StagingConfig)
+else:
+    app.config.from_object(ProductionConfig)
 
 @app.route('/')
 def resume():
     return render_template('resume.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
