@@ -45,9 +45,8 @@ jobs:
 
       - name: 'Build and Push Image'
         run: |
-          VERSION_TAG=devel-${{github.sha}}
+          VERSION_TAG=${{ steps.tag_version.outputs.new_tag }}
           if [ "${{github.ref}}" = "refs/heads/main" ]; then
-            VERSION_TAG=${{ steps.tag_version.outputs.new_tag }}
             docker build . --tag ghcr.io/jarriagad/resume:latest --tag ghcr.io/jarriagad/resume:$VERSION_TAG
             docker push ghcr.io/jarriagad/resume:latest
             docker push ghcr.io/jarriagad/resume:$VERSION_TAG
