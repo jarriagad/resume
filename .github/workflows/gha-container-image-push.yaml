@@ -46,4 +46,3 @@ jobs:
             docker build . --tag ghcr.io/jarriagad/resume:$VERSION_TAG
             docker push ghcr.io/jarriagad/resume:$VERSION_TAG
           fi
-
