@@ -9,35 +9,41 @@ on:
   workflow_dispatch:
 
 jobs:
-      push-store-image:
-        runs-on: ubuntu-latest
-        defaults:
-          run:
-            working-directory: './'
-        steps:
-          - name: 'Checkout GitHub Action'
-            uses: actions/checkout@main
-            with:
-              ref: ${{ github.sha }} # required for better experience using pre-releases
-              fetch-depth: '0'
+  push-store-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
 
-          - name: 'Login to GitHub Container Registry'
-            uses: docker/login-action@v1
-            with:
-              registry: ghcr.io
-              username: ${{github.actor}}
-              password: ${{secrets.GITHUB_TOKEN}}
+      - name: Bump version and push tag
+        if: ${{github.ref == 'refs/heads/main'}}
+        id: tag_version
+        uses: anothrNick/github-tag-action@1.64.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: false
+          DEFAULT_BUMP: patch
 
-          - name: Bump version and push tag
-            uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-              WITH_V: false
-              PRERELEASE: true
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
 
-          - name: 'Build Inventory Image'
-            run: |
-              VERSION_TAG=${{ steps.tag_version.outputs.new_tag }}
-              docker build . --tag ghcr.io/jarriagad/resume:latest --tag ghcr.io/jarriagad/resume:$VERSION_TAG
-              docker push ghcr.io/jarriagad/resume:latest
-              docker push ghcr.io/jarriagad/resume:$VERSION_TAG
+      - name: 'Build and Push Image'
+        run: |
+          VERSION_TAG=devel-${{github.sha}}
+          if [ "${{github.ref}}" = "refs/heads/main" ]; then
+            VERSION_TAG=${{ steps.tag_version.outputs.new_tag }}
+            docker build . --tag ghcr.io/jarriagad/resume:latest --tag ghcr.io/jarriagad/resume:$VERSION_TAG
+            docker push ghcr.io/jarriagad/resume:latest
+            docker push ghcr.io/jarriagad/resume:$VERSION_TAG
+          else
+            docker build . --tag ghcr.io/jarriagad/resume:$VERSION_TAG
+            docker push ghcr.io/jarriagad/resume:$VERSION_TAG
+          fi
+
