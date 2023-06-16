@@ -33,7 +33,7 @@ jobs:
           registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
-
+          
       - name: 'Build and Push Image'
         run: |
           VERSION_TAG=devel-${{github.sha}}
