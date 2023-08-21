@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_talisman import Talisman
 import os
@@ -35,7 +35,7 @@ else:
 
 @app.route('/')
 def resume():
-    return render_template('resume.html')
+    return send_from_directory('static', 'resume.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

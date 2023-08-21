@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal.first_name }} {{ personal.last_name }} - CV</title>
+    <link rel="icon" type="image/x-icon" href="static/icons8-server-prettycons-lineal-color-96.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+	<style>
+		body {
+			font-size: 12px;
+		}
+        ul {
+            padding: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+	</style>
+</head>
+<body>
+    <br>
+    <h1>{{ personal.first_name }} {{ personal.last_name }} - CV</h1>
+    <a href="static/{{ personal.first_name |lower }}-{{ personal.last_name |lower }}-resume.pdf">Download PDF version</a>
+    <h2>{{ career.short_summary }}</h2>
+    <hr>
+    <details open="">
+    <summary>Contact Information</summary>
+    <p>
+    {{ personal.location }}<br>
+    </p>
+    <address>
+        {%- for email in personal.contact_info.email %}
+        <a href="mailto:{{ email }}">{{ email }}</a><br>
+        {%- endfor %}
+
+        {%- for phone in personal.contact_info.phone %}
+        <a href="tel:{{ phone.area_code }}-{{ phone.phone_number }}">{{ phone.country_code }} ({{ phone.area_code }}) {{ phone.phone_number }}</a>
+        {%- endfor %}
+    </address>
+    </p>
+    <p>
+    {%- for link in personal.contact_info.links %}
+    {{ link.name }}: <a href="{{ link.link }}">{{ link.pretty }}</a><br>
+    {%- endfor %}
+    </p>
+    </details>
+    <h3>Overview</h3>
+    <p style="background-color: #1a242f; padding: 10px; border-radius: 5px;">
+    {{ career.long_summary }}
+    </p>
+    <h3>Skills & Core Competencies</h3>
+    <hr>
+    {%- for skills in career.core_skills %}
+    <p>{{ skills.name }}: {{ skills.skills |join(', ')}}</p>
+    {%- endfor %}
+    <h3>Experience</h3>
+    <p>
+    {%- for job in experience %}
+    <p>
+    {{ loop.index }}. <strong>{{ job.summary }}</strong><br>
+    <hr>
+    {{ job.location }}<br>
+    </p>
+    <ul>
+    {%- for acc in job.accomplishments %}
+    <li>
+    {{ acc }}
+    </li>
+    {%- endfor %}
+    </ul>
+    {%- endfor %}
+    <h3>Education & Certifications</h3>
+    <hr>
+    {%- for k, v in education.items() %}
+    <p>{{ k |capitalize }}:</p>
+        {%- for i in v %}
+        <p>{{ i }}</p>
+        {%- endfor %}
+    {%- endfor %}
+    <hr>
+    <br>
+</body>
+</html>
