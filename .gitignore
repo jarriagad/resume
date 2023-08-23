@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,pythonvanilla,helm,flask
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,pythonvanilla,helm,flask
 
+### Custom
+data/resume_info.yml
+static/resume.html
+static/test_resume.pdf
 ###MORE
 .DS_Store
 ### Flask ###

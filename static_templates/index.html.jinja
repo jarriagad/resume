@@ -57,8 +57,9 @@
     <h3>Experience</h3>
     <p>
     {%- for job in experience %}
+    {%- set job_summary = job.company ~ "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" ~ job.job_title ~ "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" ~ job.start ~ " - " ~ job.end %}
     <p>
-    {{ loop.index }}. <strong>{{ job.summary }}</strong><br>
+    {{ loop.index }}. <strong>{{ job_summary }}</strong><br>
     <hr>
     {{ job.location }}<br>
     </p>

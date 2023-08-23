@@ -72,17 +72,24 @@ career:
       - FastAPI
       - Jinja2
       - ReactJS
+      - Nginx
 experience:
-  - summary: Cyxtera&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Infrastructure Engineer&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SOC&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;04.2023 - present
+  - company: Cyxtera Technologies
+    job_title: SOC Infrastructure Engineer
     location: Dallas, Tx
+    start: "04.2023"
+    end: present
     accomplishments:
     - Ensured compliance with U.S. Federal Risk and Authorization Management Program (FedRAMP).
     - Diagnosed and resolved issues within the Enterprise Splunk instance, implementing configurations to manage and synchronize all components of the system.
     - Restored functionality to all Suricata sensors, performing troubleshooting and necessary adjustments to achieve optimal performance.
     - Successfully recovered configuration management for all Virtual Machines (VMs), implementing security protocols and connectivity measures.
     - Authored a Prometheus exporter specifically for Tenable.sc scans, improving the efficiency and visibility of security scans.
-  - summary: Cyxtera&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Infrastructure Engineer&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;CXD Team&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;03.2021 - 04.2023
+  - company: Cyxtera Technologies
+    job_title: CXD Infrastructure Engineer
     location: Dallas, Tx
+    start: "03.2021"
+    end: "04.2023"
     accomplishments:
     - Developed and maintained a permissions elevation platform allowing network operators to securely acquire on-demand admin access to network devices.
     - Engineered a 3rd party notification distribution system that delievered necessary alerts to affected services' customers. Increasing visibility over network maintenances and impacting outages.
@@ -91,26 +98,38 @@ experience:
     - Managed application bugs from discovery to resolution, collaborating with development teams to deliver effective solutions and ensure high-quality software delivery.
     - Deployment and patching of all HCI infrastructure servers to ensure latest security updates and features.
     - Worked directly with customers to troubleshoot and resolve escalated service issues related to their deployed infrastructure.
-  - summary: Global IP Networks&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Linux Engineer&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;02.2020 - 03.2021
+  - company: Global IP Networks
+    job_title: Linux Engineer
     location: Plano, Tx
+    start: "02.2020"
+    end: "03.2021"
     accomplishments:
     - Configure and manage all Linux systems.
     - Develop and implement training for t1-t3 support.
     - Manage internal and external networks + project management related to network configuration changes.
     - Data center automation. 
-  - summary: Global IP Networks&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Support Analyst&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;12.2019 - 02.2020
+  - company: Global IP Networks
+    job_title: Support Analyst
     location: Plano, Tx
+    start: "12.2019"
+    end: "02.2020"
     accomplishments:
     - Resolve escalated tickets within established SLAs.
     - Full-stack troubleshooting of hardware, software, and web-hosting related inquiries.
     - Install and manage crossconnects, rack and stack of servers and network equipment.
-  - summary: Global IP Networks&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Rapid Response Team&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;10.2019 - 12.2019
+  - company: Global IP Networks
+    job_title: Rapid Response Team
+    start: "10.2019"
+    end: "12.2019"
     location: Plano, Tx
     accomplishments:
     - Engage with customers and troubleshoot issues raised.
     - Rack and stack network and server hardware as specified.
     - Handle cabling of hardware and ensure customer satisfaction. 
-  - summary: Aspira&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Support Analyst&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;06.2019 - 10.2019
+  - company: Aspira
+    job_title: Support Analyst
+    start: "06.2019"
+    end: "10.2019"
     location: Dallas, Tx
     accomplishments:
     - Resolve escalated tickets within established SLAs or engage escalation channels.
