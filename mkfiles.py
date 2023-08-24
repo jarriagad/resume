@@ -4,6 +4,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Paragraph
+from reportlab.pdfbase.pdfmetrics import stringWidth
 
 
 from pdfrw import PdfReader
@@ -38,16 +39,18 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     email = resume.personal.contact_info.email[0]
 
     phone_dict = Box(resume.personal.contact_info.phone[0])
-    phone      = f"{phone_dict.country_code} ({phone_dict.area_code}) {phone_dict.phone_number}"
+    phone = (
+        f"{phone_dict.country_code} ({phone_dict.area_code}) {phone_dict.phone_number}"
+    )
 
     location = resume.personal.location
 
     short_summary = resume.career.short_summary
-    long_summary  = resume.career.long_summary
+    long_summary = resume.career.long_summary
 
     company = resume.experience[0].company
-    title   = resume.experience[0].job_title
-    dates   = resume.experience[0].start + " - " + resume.experience[0].end
+    title = resume.experience[0].job_title
+    dates = resume.experience[0].start + " - " + resume.experience[0].end
 
     # Letter size is 612x792
     canvas = Canvas(outfile, pagesize=letter)
@@ -81,7 +84,9 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     canvas.setFont("Times-Roman", 12)
     canvas.drawString(xval, yval, short_summary)
 
-    style = ParagraphStyle(name="Times-Roman", fontName="Times-Roman", fontSize=12, leading=15)
+    style = ParagraphStyle(
+        name="Times-Roman", fontName="Times-Roman", fontSize=12, leading=15
+    )
     paragraph = Paragraph(long_summary, style)
     paragraph.wrapOn(canvas, 572, 50)
     paragraph.drawOn(canvas, xval - 35, yval - 75)
@@ -93,17 +98,94 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     canvas.drawString(xval, yval, "Work Experience")
     canvas.line(20, yval - line_offset, 592, yval - line_offset)
 
-    canvas.drawString(xval, yval - 22, company)
+    initx = xval
+    inity = yval - 22
+
+# loop for job tasks
+    for job in resume.experience[:3]:
+        company = job.company
+        title = job.job_title
+        location = job.location
+        dates = location + "   •   " + job.start + " - " + job.end
+        job_tasks = "<br/>".join(f"• {item}" for item in job.accomplishments)
+
+        font_size_company = 12
+        font_size_title = 10
+        leading = 15
+        space_between_title_and_paragraph = 2  # Adjust this value to change the space
+
+        canvas.setFont("Times-Bold", 12)
+        canvas.drawString(initx, inity, company)
+        canvas.setFont("Times-Roman", font_size_company)
+        dates_width = stringWidth(dates, "Times-Roman", font_size_company)
+        canvas.drawString(592 - dates_width, inity, dates)
+        inity -= leading
+        canvas.setFont("Times-Italic", font_size_title)
+        canvas.drawString(initx, inity, title)
+        inity -= space_between_title_and_paragraph
+
+        paragraph = Paragraph(job_tasks, style)
+        paragraph_width, paragraph_height = paragraph.wrapOn(canvas, 572, 50)
+        paragraph.drawOn(canvas, initx, inity - paragraph_height - leading)
+        
+        total_height = font_size_company + font_size_title + paragraph_height + 1 * leading
+        inity -= total_height
+
+    # New page
+    canvas.showPage()
+
+    # Skills
+    yval = 740
+    xval = 20
+    canvas.setFont("Times-Bold", 12)
+    canvas.drawString(xval, yval, "Skills Summary")
+    canvas.line(20, yval - line_offset, 592, yval - line_offset)
+
+    initx = xval
+    inity = yval - 22
+
+# loop for job tasks
+    for skill in resume.career.core_skills:
+        skill_title = skill.name
+        skill_list = skill.skills
+        skill_line = "• " + skill_title + ": " + ", ".join(skill_list)
+
+
+        font_size_company = 12
+        font_size_title = 10
+        leading = 15
+        space_between_title_and_paragraph = 2  # Adjust this value to change the space
+
+        canvas.setFont("Times-Roman", font_size_company)
+        canvas.drawString(initx, inity, skill_line)
+        total_height = font_size_company + 5
+        inity -= total_height
+    
+    # Education
+    yval = inity - 15
+    xval = 20
+    canvas.setFont("Times-Bold", 12)
+    canvas.drawString(xval, yval, "Education & Certs")
+    canvas.line(20, yval - line_offset, 592, yval - line_offset)
+    
+    # Draw the current education
     canvas.setFont("Times-Roman", 12)
-    canvas.drawString(510, yval - 22, dates)
-    canvas.setFont("Times-Italic", 10)
-    canvas.drawString(xval, yval - 35, title)
+    canvas.drawString(xval, yval - 22, "Current:")
+    yval -= 40
+    for item in resume.education.current:
+        canvas.drawString(40, yval, f"• {item}")
+        yval -= 15
 
-
+    # Draw the pending education
+    yval -= 5
+    canvas.drawString(20, yval, "Pending:")
+    yval -= 20
+    for item in resume.education.pending:
+        canvas.drawString(40, yval, f"• {item}")
+        yval -= 15
 
     # Save
     canvas.save()
-
 
 def generate_html(
     templates_dir: str, template_index: str, static_path_index: str, resume_data: dict
