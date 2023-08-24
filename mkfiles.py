@@ -210,7 +210,7 @@ def main() -> None:
     static_index = "resume.html"
     static_path_index = static_dir + "/" + static_index
     pdf_file = templates_dir + "/blank_pdf.pdf"
-    pdf_target = static_dir + "/test_resume.pdf"
+    pdf_target = static_dir + "/javier-arriagada-resume.pdf"
 
     resume_data = read_resume_config(data_path)
 
