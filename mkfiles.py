@@ -14,6 +14,8 @@ from box import Box
 
 from jinja2 import Environment, FileSystemLoader
 from yaml import load
+import shutil
+import os
 
 try:
     from yaml import CLoader as Loader
@@ -200,6 +202,16 @@ def generate_html(
         file.write(template_output)
 
 
+def copy_src(src: str, dest: str) -> None:
+    for item in os.listdir(src):
+        src_item = os.path.join(src, item)
+        dest_item = os.path.join(dest, item)
+        
+        if os.path.isdir(src_item):
+            shutil.copytree(src_item, dest_item)
+        else:
+            shutil.copy2(src_item, dest_item)
+
 def main() -> None:
     data_dir = "data"
     data_file = "resume_info.yml"
@@ -211,6 +223,7 @@ def main() -> None:
     static_path_index = static_dir + "/" + static_index
     pdf_file = templates_dir + "/blank_pdf.pdf"
     pdf_target = static_dir + "/javier-arriagada-resume.pdf"
+    file_src = templates_dir + "/" + "src"
 
     resume_data = read_resume_config(data_path)
 
@@ -220,13 +233,20 @@ def main() -> None:
         static_path_index=static_path_index,
         resume_data=resume_data,
     )
+    print("Generated HTML")
 
     generate_pdf(
         template=pdf_file,
         target=pdf_target,
         resume_data=resume_data,
     )
+    print("Generated PDF")
+
+    copy_src(src=file_src, dest=static_dir)
+    print("src files copied")
 
 
 if __name__ == "__main__":
     main()
+    print("End of script")
+
