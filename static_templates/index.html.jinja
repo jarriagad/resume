@@ -41,7 +41,9 @@
     </p>
     <p>
     {%- for link in personal.contact_info.links %}
+    {%- if 'html' not in link.hidden %}
     {{ link.name }}: <a href="{{ link.link }}">{{ link.pretty }}</a><br>
+    {%- endif %}
     {%- endfor %}
     </p>
     </details>

@@ -77,11 +77,11 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     canvas.drawString(482, yval, "•")
     canvas.drawString(500, yval, location)
 
-    line_offset = 4
+    line_offset = 5
     canvas.line(20, yval - line_offset, 592, yval - line_offset)
 
     # Summary - yes
-    yval = 725
+    yval = 720
     xval = 55
     canvas.setFont("Times-Roman", 12)
     canvas.drawString(xval, yval, short_summary)
@@ -113,7 +113,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
 
         font_size_company = 12
         font_size_title = 10
-        leading = 15
+        leading = 10
         space_between_title_and_paragraph = 2  # Adjust this value to change the space
 
         canvas.setFont("Times-Bold", 12)
@@ -127,17 +127,18 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
         inity -= space_between_title_and_paragraph
 
         paragraph = Paragraph(job_tasks, style)
-        paragraph_width, paragraph_height = paragraph.wrapOn(canvas, 572, 50)
+        _, paragraph_height = paragraph.wrapOn(canvas, 572, 50)
         paragraph.drawOn(canvas, initx, inity - paragraph_height - leading)
         
         total_height = font_size_company + font_size_title + paragraph_height + 1 * leading
         inity -= total_height
 
-    # New page
-    canvas.showPage()
+        if inity < 50:
+            canvas.showPage()
+            inity = 740
 
     # Skills
-    yval = 740
+    yval = inity
     xval = 20
     canvas.setFont("Times-Bold", 12)
     canvas.drawString(xval, yval, "Skills Summary")
@@ -146,7 +147,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     initx = xval
     inity = yval - 22
 
-# loop for job tasks
+# loop for core skills
     for skill in resume.career.core_skills:
         skill_title = skill.name
         skill_list = skill.skills
@@ -185,6 +186,24 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     for item in resume.education.pending:
         canvas.drawString(40, yval, f"• {item}")
         yval -= 15
+    
+
+    # links
+    #yval = inity - 15
+    yval = yval - 15
+    xval = 20
+    canvas.setFont("Times-Bold", 12)
+    canvas.drawString(xval, yval, "Links")
+    canvas.line(20, yval - line_offset, 592, yval - line_offset)
+    yval -= 30
+    
+    # Draw the current education
+    canvas.setFont("Times-Roman", 12)
+    for link in resume.personal.contact_info.links:
+        if "pdf" not in link.hidden:
+            canvas.drawString(40, yval, f"• {link.name}: {link.link}")
+            yval -= 20
+
 
     # Save
     canvas.save()

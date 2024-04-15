@@ -6,6 +6,8 @@ data/resume_info.yml
 static/resume.html
 static/test_resume.pdf
 static/javier-arriagada-resume.pdf
+static/
+
 ###MORE
 .DS_Store
 ### Flask ###
