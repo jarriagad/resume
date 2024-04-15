@@ -81,7 +81,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     canvas.line(20, yval - line_offset, 592, yval - line_offset)
 
     # Summary
-    yval = 720
+    yval = 725
     xval = 55
     canvas.setFont("Times-Roman", 12)
     canvas.drawString(xval, yval, short_summary)
@@ -104,7 +104,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     inity = yval - 22
 
 # loop for job tasks
-    for job in resume.experience[:3]:
+    for job in resume.experience[:5]:
         company = job.company
         title = job.job_title
         location = job.location
