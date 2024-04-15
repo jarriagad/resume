@@ -103,7 +103,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     initx = xval
     inity = yval - 22
 
-# loop for job tasks
+# loop for job tasks - yes
     for job in resume.experience[:5]:
         company = job.company
         title = job.job_title
