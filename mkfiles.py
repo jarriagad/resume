@@ -80,7 +80,7 @@ def generate_pdf(template: str, target: str, resume_data: dict) -> None:
     line_offset = 4
     canvas.line(20, yval - line_offset, 592, yval - line_offset)
 
-    # Summary
+    # Summary - yes
     yval = 725
     xval = 55
     canvas.setFont("Times-Roman", 12)
